@@ -6,12 +6,14 @@
 #include <algorithm>
 #include <vector>
 
+
 using std::string;
 using std::vector;
 using std::max;
 using std::min;
 using std::unique_ptr;
 using std::make_unique;
+using std::to_string;
 
 struct Creature {
     protected:
@@ -71,9 +73,34 @@ std::ostream& operator<<(std::ostream& outs, const Creature& creature) {
 
 
 struct Player : Creature {
+    protected:
+        static constexpr int moves_count = 2;
+        vector<unique_ptr<Move>> known_moves;
     public:
         Player(string name) : Creature{"Player " + name, 100}
-        {}
+        {
+            known_moves.push_back(make_unique<JazzHands>());
+            known_moves.push_back(make_unique<Macarena>());
+        }
+
+        string list_moves(){
+            int count = 1;
+            string ret_str = "";
+            for (const auto& move : known_moves){
+                ret_str += (to_string(count) + ". " + move->get_name() + "\n");
+            }
+            return ret_str;
+        }
+
+        string target(Creature& victim, int move_number){
+            if (moves_count <= 0){ 
+                return "No moves";
+            }
+            if (move_number < 0 || move_number >= moves_count){
+                return "Invalid move";
+            }
+            return known_moves[move_number]->target(*this, victim);
+        }
 
     
 };
@@ -88,7 +115,6 @@ struct Enemy : Creature {
         {}
 
     public:
-    //TODO: MAKE THIS WORK
         string target(Creature& victim){
             if (moves_count > 0){ 
                 return known_moves[rand() % moves_count]->target(*this, victim);

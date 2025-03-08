@@ -2,6 +2,7 @@
 
 #include "ft_creatures.hpp"
 #include "ft_moves.hpp"
+#include "ft_fight.hpp"
 
 using namespace std;
 
@@ -18,16 +19,9 @@ int main() {
 
     JazzHands jh = JazzHands();
 
-    cout << kyle << endl;
-    cout << dave << endl;
-    cout << cora << endl;
-    cout << tar << endl;
+    start_fight(pl);
 
-    cout << endl;
-    cout << "HERE COMES AN ATTACK!!" << endl;
-    cout << kyle.target(cora) << endl;
-
-    cout << cora << endl;
+    
 
     return 0;
 }

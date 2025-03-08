@@ -20,6 +20,10 @@ struct Move {
         virtual string target(Creature& attacker, Creature& victim){
             return attacker.get_name() + " targets " + victim.get_name();;
         }
+
+        string get_name(){
+            return name;
+        }
     
 };
 
