@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "ft_creatures.hpp"
+#include "ft_moves.hpp"
 
 using namespace std;
 
@@ -8,15 +9,25 @@ using namespace std;
 int main() {
     std::srand(std::time({}));
 
-    GrooveGoblin test = GrooveGoblin("Kyle");
-    GrooveGoblin test1 = GrooveGoblin("Dave");
-    DiscoDevil test3 = DiscoDevil("Coraxxus, Eater of All");
-    DiscoDevil test4 = DiscoDevil("Tarmacklemoore, Singer of Wonderwall");
+    GrooveGoblin kyle = GrooveGoblin("Kyle");
+    GrooveGoblin dave = GrooveGoblin("Dave");
+    DiscoDevil cora = DiscoDevil("Coraxxus, Eater of All");
+    DiscoDevil tar = DiscoDevil("Tarmacklemoore, Singer of Wonderwall");
 
-    cout << test << endl;
-    cout << test1 << endl;
-    cout << test3 << endl;
-    cout << test4 << endl;
+    Player pl = Player("Kristján");
+
+    JazzHands jh = JazzHands();
+
+    cout << kyle << endl;
+    cout << dave << endl;
+    cout << cora << endl;
+    cout << tar << endl;
+
+    cout << endl;
+    cout << "HERE COMES AN ATTACK!!" << endl;
+    cout << kyle.target(cora) << endl;
+
+    cout << cora << endl;
 
     return 0;
 }

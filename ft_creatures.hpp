@@ -1,26 +1,41 @@
+#ifndef FT_CREATURES
+#define FT_CREATURES
+
 #include <stdlib.h>
+#include <string>
+#include <algorithm>
+#include <vector>
+
+using std::string;
+using std::vector;
+using std::max;
+using std::min;
+using std::unique_ptr;
+using std::make_unique;
 
 struct Creature {
     protected:
-        std::string name;
-        int health;
-        int energy;
+        string name;
+        int max_health;
+        int curr_health;
+        int max_energy;
+        int curr_energy;
         int speed;
         int defense;
 
-        Creature(std::string name, int health_base = 0, int energy = 4, int speed = 5, int defense = 10)
-            : name{name}, health{health_base}, energy{energy}, speed{speed}, defense{defense}
+        Creature(string name, int health_base = 0, int energy = 4, int speed = 5, int defense = 10)
+            : name{name}, max_health{health_base}, curr_health{max_health}, max_energy{energy}, curr_energy{max_energy}, speed{speed}, defense{defense}
         {}
 
 
     
     public:
         int get_health(){
-            return health;
+            return curr_health;
         }
 
         int get_energy(){
-            return energy;
+            return curr_energy;
         }
 
         int get_speed(){
@@ -30,26 +45,35 @@ struct Creature {
         int get_defense(){
             return defense;
         }
-        std::string get_name(){
+        string get_name(){
             return name;
+        }
+
+        void modify_health(int value){
+            curr_health += value;
+            curr_health = max(0, min(curr_health, max_health));
+        }
+
+        void modify_energy(int value){
+            curr_energy += value;
+            curr_energy = max(0, min(curr_energy, max_energy));
         }
 
         friend std::ostream& operator<<(std::ostream& outs, const Creature& creature);
     
 };
 
+#include "ft_moves.hpp"
+
 std::ostream& operator<<(std::ostream& outs, const Creature& creature) {
-    return outs << creature.name << ", " << creature.health;
+    return outs << creature.name << ", " << creature.curr_health;
 }
 
 
 struct Player : Creature {
     public:
-        Player(std::string name) : Creature{name}
-        {
-            this->name = "Player " + name;
-            this->health = 100;
-        }
+        Player(string name) : Creature{"Player " + name, 100}
+        {}
 
     
 };
@@ -57,31 +81,46 @@ struct Player : Creature {
 
 struct Enemy : Creature {
     protected:
-        Enemy(std::string name, int h_base = 0, int h_extra = 1) : Creature{name, h_base, h_extra}
-        {
-            this->health = health + (rand() % h_extra);
+        int moves_count;
+        vector<unique_ptr<Move>> known_moves;
+        Enemy(string name, int h_base, int h_extra, int moves_count = 0) : 
+            Creature{name, h_base + (rand() % h_extra)}, moves_count{moves_count}
+        {}
+
+    public:
+    //TODO: MAKE THIS WORK
+        string target(Creature& victim){
+            if (moves_count > 0){ 
+                return known_moves[rand() % moves_count]->target(*this, victim);
+            }
+            return "No moves";
         }
 };
 
 
 struct GrooveGoblin : Enemy {
     protected:
-        static const constexpr int health_base = 50;
-        static const constexpr int health_extra = 20;
+        static constexpr int health_base = 50;
+        static constexpr int health_extra = 20;
+        static constexpr int moves_count = 2;
     public:
-        GrooveGoblin(std::string name, int h_base = health_base, int h_extra = health_extra) : Enemy{name, h_base, h_extra}
+        GrooveGoblin(string name) : Enemy{"Groove Goblin " + name, health_base, health_extra, moves_count}
         {
-            this->name = "Groove Goblin " + name;
+            known_moves.push_back(make_unique<JazzHands>());
+            known_moves.push_back(make_unique<Macarena>());
         }
 };
 
 struct DiscoDevil : Enemy {
     protected:
-        static const constexpr int health_base = 80;
-        static const constexpr int health_extra = 40;
+        static constexpr int health_base = 80;
+        static constexpr int health_extra = 40;
+        static constexpr int moves_count = 1;
     public:
-        DiscoDevil(std::string name, int h_base = health_base, int h_extra = health_extra) : Enemy{name, h_base, h_extra}
+        DiscoDevil(string name) : Enemy{"Disco Devil " + name, health_base, health_extra, moves_count}
         {
-            this->name = "Disco Devil " + name;
+            known_moves.push_back(make_unique<JazzHands>());
         }
 };
+
+#endif
