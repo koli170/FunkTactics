@@ -20,7 +20,6 @@ using std::unique_ptr;
 using std::make_unique;
 using std::endl;
 
-//TODO: INVALID SELECTION CRASH
 
 bool start_fight(Player& player){
     int selected_move;
@@ -64,12 +63,24 @@ bool start_fight(Player& player){
         cout << endl;
 
         cout << "------------- SELECT MOVE! -------------" << endl;
-        cout << player.list_moves();
-        cout << "Select move: ";
-        cin >> selected_move;
+        selected_move = -1;
+        while (selected_move < 1 || selected_move > player.get_move_count()){
+            cout << player.list_moves();
+            cout << "Select move: ";
+            cin >> selected_move;
+            if (selected_move < 1 || selected_move > player.get_move_count()){
+                cout << "Invalid Move" << endl << endl;
+            }
+        }
 
-        cout << "Select target: ";
-        cin >> selected_target;
+        selected_target = -1;
+        while (selected_target < 1 || selected_target > static_cast<int>(enemies.size())){
+            cout << "Select target: ";
+            cin >> selected_target;
+            if (selected_target < 1 || selected_target > static_cast<int>(enemies.size())){
+                cout << "Invalid Target" << endl << endl;
+            }
+        }
         cout << endl;
 
         cout << player.target(*enemies[selected_target-1], selected_move-1) << endl;

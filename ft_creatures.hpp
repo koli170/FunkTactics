@@ -91,6 +91,10 @@ struct Player : Creature {
             known_moves.push_back(make_unique<Macarena>());
         }
 
+        int get_move_count(){
+            return moves_count;
+        }
+
         string list_moves(){
             int count = 1;
             string ret_str = "";
