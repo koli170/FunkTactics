@@ -15,6 +15,38 @@ using std::unique_ptr;
 using std::make_unique;
 using std::to_string;
 
+string funkify(string name){
+    // Adds a funky adjective to the start of the string, matches first letter
+    switch(name[0]) {
+        case 'A': case 'a': name = "Astral " + name; break;
+        case 'B': case 'b': name = "Boogie " + name; break;
+        case 'C': case 'c': name = "Cosmic " + name; break;
+        case 'D': case 'd': name = "Disco " + name; break;
+        case 'E': case 'e': name = "Electric " + name; break;
+        case 'F': case 'f': name = "Funky " + name; break;
+        case 'G': case 'g': name = "Groovy " + name; break;
+        case 'H': case 'h': name = "Hotfoot " + name; break;
+        case 'I': case 'i': name = "Indigo " + name; break;
+        case 'J': case 'j': name = "Jazzy " + name; break;
+        case 'K': case 'k': name = "Kickin' " + name; break;
+        case 'L': case 'l': name = "Lo-fi " + name; break;
+        case 'M': case 'm': name = "Melodic " + name; break;
+        case 'N': case 'n': name = "Omni " + name; break;
+        case 'P': case 'p': name = "Phat " + name; break;
+        case 'Q': case 'q': name = "Quick " + name; break;
+        case 'R': case 'r': name = "Retro " + name; break;
+        case 'S': case 's': name = "Slick " + name; break;
+        case 'T': case 't': name = "Turbo " + name; break;
+        case 'U': case 'u': name = "Ultra " + name; break;
+        case 'V': case 'v': name = "Vinyl " + name; break;
+        case 'W': case 'w': name = "Whammy  " + name; break;
+        case 'X': case 'x': name = "Xenon " + name; break;
+        case 'Y': case 'y': name = "Yippee " + name; break;
+        case 'Z': case 'z': name = "Zesty " + name; break;
+    }
+    return name;
+}
+
 struct Creature {
     protected:
         string name;
@@ -85,7 +117,7 @@ struct Player : Creature {
         static constexpr int moves_count = 2;
         vector<unique_ptr<Move>> known_moves;
     public:
-        Player(string name) : Creature{"Player " + name, 100}
+        Player(string name) : Creature{funkify(name), 100}
         {
             known_moves.push_back(make_unique<JazzHands>());
             known_moves.push_back(make_unique<Macarena>());
