@@ -51,6 +51,14 @@ struct Creature {
             return name;
         }
 
+        virtual ~Creature() = default;
+        virtual string target(Creature& victim){
+            return this->get_name() + " targets " + victim.get_name();
+        }
+        virtual string target(Creature& victim, int selected_move){
+            return this->get_name() + " targets " + victim.get_name() + " with " + to_string(selected_move);
+        }
+
         void modify_health(int value){
             curr_health += value;
             curr_health = max(0, min(curr_health, max_health));
@@ -88,6 +96,7 @@ struct Player : Creature {
             string ret_str = "";
             for (const auto& move : known_moves){
                 ret_str += (to_string(count) + ". " + move->get_name() + "\n");
+                count++;
             }
             return ret_str;
         }

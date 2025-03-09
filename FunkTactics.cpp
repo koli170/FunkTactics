@@ -19,7 +19,7 @@ int main() {
 
     JazzHands jh = JazzHands();
 
-    start_fight(pl);
+    cout << start_fight(pl);
 
     
 
