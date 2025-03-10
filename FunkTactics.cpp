@@ -15,7 +15,9 @@ int main() {
     DiscoDevil cora = DiscoDevil("Coraxxus, Eater of All");
     DiscoDevil tar = DiscoDevil("Tarmacklemoore, Singer of Wonderwall");
 
-    Player pl = Player("Kristján");
+    string player_name;
+    cin >> player_name;
+    Player pl = Player(player_name);
 
     JazzHands jh = JazzHands();
 

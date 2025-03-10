@@ -137,6 +137,16 @@ struct Player : Creature {
             return ret_str;
         }
 
+        string list_moves_advanced(){
+            int count = 1;
+            string ret_str = "";
+            for (const auto& move : known_moves){
+                ret_str += (to_string(count) + ". " + move->get_stats() + "\n");
+                count++;
+            }
+            return ret_str;
+        }
+
         string target(Creature& victim, int move_number){
             if (moves_count <= 0){ 
                 return "No moves";

@@ -20,6 +20,10 @@ struct Move {
         virtual string target(Creature& attacker, Creature& victim){
             return attacker.get_name() + " targets " + victim.get_name();;
         }
+        
+        virtual string get_stats(){
+            return name + to_string(cost);
+        }
 
         string get_name(){
             return name;
@@ -60,6 +64,10 @@ struct Attack : Move {
 
             return ret_str;
         };
+
+        string get_stats(){
+            return name + "\tPWR: " + to_string(damage) + "   ACC: " + to_string(accuracy) + "   CST: " + to_string(cost);
+        }
 
 
 

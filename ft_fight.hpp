@@ -65,7 +65,7 @@ bool start_fight(Player& player){
         cout << "------------- SELECT MOVE! -------------" << endl;
         selected_move = -1;
         while (selected_move < 1 || selected_move > player.get_move_count()){
-            cout << player.list_moves();
+            cout << player.list_moves_advanced();
             cout << "Select move: ";
             cin >> selected_move;
             if (selected_move < 1 || selected_move > player.get_move_count()){
