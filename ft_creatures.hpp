@@ -58,7 +58,7 @@ struct Creature {
         int defense;
 
         Creature(string name, int health_base = 0, int energy = 4, int speed = 5, int defense = 10)
-            : name{name}, max_health{health_base}, curr_health{max_health}, max_energy{energy}, curr_energy{max_energy}, speed{speed}, defense{defense}
+            : name{name}, max_health{health_base}, curr_health{max_health}, max_energy{energy}, curr_energy{0}, speed{speed}, defense{defense}
         {}
 
 
@@ -67,9 +67,17 @@ struct Creature {
         int get_health(){
             return curr_health;
         }
+        
+        int get_max_health(){
+            return max_health;
+        }
 
         int get_energy(){
             return curr_energy;
+        }
+
+        int get_max_energy(){
+            return max_energy;
         }
 
         int get_speed(){
