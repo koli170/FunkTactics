@@ -56,7 +56,8 @@ struct Attack : Move {
                 ret_str += "CRIT! ";
             }
             else{
-                dealt = damage + (rand() % (damage/4));
+                dealt = damage + (rand() % (damage/3));
+                dealt = (dealt*(100-victim.get_defense()))/100;
             }
 
             victim.modify_health(-dealt);

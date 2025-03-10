@@ -16,6 +16,7 @@ int main() {
     DiscoDevil tar = DiscoDevil("Tarmacklemoore, Singer of Wonderwall");
 
     string player_name;
+    cout << "Input name: ";
     cin >> player_name;
     Player pl = Player(player_name);
 
