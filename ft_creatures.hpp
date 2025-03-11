@@ -64,6 +64,7 @@ struct Creature {
 
     
     public:
+
         int get_health(){
             return curr_health;
         }
@@ -122,17 +123,12 @@ std::ostream& operator<<(std::ostream& outs, const Creature& creature) {
 
 struct Player : Creature {
     protected:
-        static constexpr int moves_count = 2;
-        vector<unique_ptr<Move>> known_moves;
     public:
+        vector<unique_ptr<Move>> known_moves;
         Player(string name) : Creature{funkify(name), 100}
         {
             known_moves.push_back(make_unique<JazzHands>());
             known_moves.push_back(make_unique<Macarena>());
-        }
-
-        int get_move_count(){
-            return moves_count;
         }
 
         string list_moves(){
@@ -156,10 +152,10 @@ struct Player : Creature {
         }
 
         string target(Creature& victim, int move_number){
-            if (moves_count <= 0){ 
+            if (known_moves.size() <= 0){ 
                 return "No moves";
             }
-            if (move_number < 0 || move_number >= moves_count){
+            if (move_number < 0 || move_number > static_cast<int>(known_moves.size())){
                 return "Invalid move";
             }
             return known_moves[move_number]->target(*this, victim);
@@ -171,16 +167,15 @@ struct Player : Creature {
 
 struct Enemy : Creature {
     protected:
-        int moves_count;
-        vector<unique_ptr<Move>> known_moves;
-        Enemy(string name, int h_base, int h_extra, int moves_count = 0) : 
-            Creature{name, h_base + (rand() % h_extra)}, moves_count{moves_count}
+        Enemy(string name, int h_base, int h_extra) : 
+            Creature{name, h_base + (rand() % h_extra)}
         {}
 
     public:
+        vector<unique_ptr<Move>> known_moves;
         string target(Creature& victim){
-            if (moves_count > 0){ 
-                return known_moves[rand() % moves_count]->target(*this, victim);
+            if (known_moves.size() > 0){ 
+                return known_moves[rand() % static_cast<int>(known_moves.size())]->target(*this, victim);
             }
             return "No moves";
         }
@@ -193,7 +188,7 @@ struct GrooveGoblin : Enemy {
         static constexpr int health_extra = 20;
         static constexpr int moves_count = 2;
     public:
-        GrooveGoblin(string name) : Enemy{"Groove Goblin " + name, health_base, health_extra, moves_count}
+        GrooveGoblin(string name) : Enemy{"Groove Goblin " + name, health_base, health_extra}
         {
             known_moves.push_back(make_unique<JazzHands>());
             known_moves.push_back(make_unique<Macarena>());
@@ -206,7 +201,7 @@ struct DiscoDevil : Enemy {
         static constexpr int health_extra = 40;
         static constexpr int moves_count = 1;
     public:
-        DiscoDevil(string name) : Enemy{"Disco Devil " + name, health_base, health_extra, moves_count}
+        DiscoDevil(string name) : Enemy{"Disco Devil " + name, health_base, health_extra}
         {
             known_moves.push_back(make_unique<JazzHands>());
         }

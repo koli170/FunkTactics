@@ -64,12 +64,19 @@ bool start_fight(Player& player){
 
         cout << "------------- SELECT MOVE! -------------" << endl;
         selected_move = -1;
-        while (selected_move < 1 || selected_move > player.get_move_count()){
+        bool valid = false;
+        while (!valid){
+            valid = true;
             cout << player.list_moves_advanced();
             cout << "Select move: ";
             cin >> selected_move;
-            if (selected_move < 1 || selected_move > player.get_move_count()){
+            if (selected_move < 1 || selected_move > static_cast<int>(player.known_moves.size())){
                 cout << "Invalid Move" << endl << endl;
+                valid = false;
+            }
+            else if (player.known_moves[selected_move-1]->get_cost() > player.get_energy()){
+                cout << "Not Enough Energy" << endl << endl;
+                valid = false;
             }
         }
 
