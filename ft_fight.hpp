@@ -99,7 +99,7 @@ bool start_fight(Player& player){
         }
         // DO MOVE IF NOT TARGETED
         else {
-            player.target(selected_move-1);
+            cout << player.target(selected_move-1) << endl;
         }
 
         counter = 0;

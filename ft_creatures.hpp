@@ -57,9 +57,10 @@ struct Creature {
         int curr_energy;
         int speed;
         int defense;
+        int strength;
 
-        Creature(string name, int health_base = 0, int energy = 4, int speed = 5, int defense = 10)
-            : name{name}, max_health{health_base}, curr_health{max_health}, max_energy{energy}, curr_energy{0}, speed{speed}, defense{defense}
+        Creature(string name, int health_base = 0, int defense = 10, int strength = 10, int energy = 4, int speed = 5)
+            : name{name}, max_health{health_base}, curr_health{max_health}, max_energy{energy}, curr_energy{0}, speed{speed}, defense{defense}, strength{strength}
         {}
 
 
@@ -89,6 +90,11 @@ struct Creature {
         int get_defense(){
             return defense;
         }
+
+        int get_strength(){
+            return strength;
+        }
+
         string get_name(){
             return name;
         }
@@ -127,12 +133,16 @@ std::ostream& operator<<(std::ostream& outs, const Creature& creature) {
 
 struct Player : Creature {
     protected:
+        static constexpr int health = 100;
+        static constexpr int defense = 30;
+        static constexpr int strength = 20;
     public:
         vector<unique_ptr<Move>> known_moves;
-        Player(string name) : Creature{funkify(name), 100}
+        Player(string name) : Creature{funkify(name), health, defense, strength}
         {
             known_moves.push_back(make_unique<JazzHands>());
             known_moves.push_back(make_unique<Macarena>());
+            known_moves.push_back(make_unique<Charge>());
         }
 
         string list_moves(){
@@ -180,8 +190,8 @@ struct Player : Creature {
 
 struct Enemy : Creature {
     protected:
-        Enemy(string name, int h_base, int h_extra) : 
-            Creature{name, h_base + (rand() % h_extra)}
+        Enemy(string name, int h_base, int h_extra, int strength, int defense) : 
+            Creature{name, h_base + (rand() % h_extra), defense, strength}
         {}
 
     public:
@@ -199,9 +209,10 @@ struct GrooveGoblin : Enemy {
     protected:
         static constexpr int health_base = 50;
         static constexpr int health_extra = 20;
-        static constexpr int moves_count = 2;
+        static constexpr int strength = 5;
+        static constexpr int defense = 5;
     public:
-        GrooveGoblin(string name) : Enemy{"Groove Goblin " + name, health_base, health_extra}
+        GrooveGoblin(string name) : Enemy{"Groove Goblin " + name, health_base, health_extra, strength, defense}
         {
             known_moves.push_back(make_unique<JazzHands>());
             known_moves.push_back(make_unique<Macarena>());
@@ -212,9 +223,10 @@ struct DiscoDevil : Enemy {
     protected:
         static constexpr int health_base = 80;
         static constexpr int health_extra = 40;
-        static constexpr int moves_count = 1;
+        static constexpr int strength = 15;
+        static constexpr int defense = 20;
     public:
-        DiscoDevil(string name) : Enemy{"Disco Devil " + name, health_base, health_extra}
+        DiscoDevil(string name) : Enemy{"Disco Devil " + name, health_base, health_extra, strength, defense}
         {
             known_moves.push_back(make_unique<JazzHands>());
         }

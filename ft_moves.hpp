@@ -94,7 +94,7 @@ struct Stat : Move {
         Stat(string name, int pwr, int acc = 100, int cst = 0) : Move{name, cst}, power{pwr}, accuracy{acc}, cost{cst}
         {}
 
-        string target(Creature& attacker){
+        virtual string trigger(Creature& attacker){
             string ret_str = "";
 
             return attacker.get_name() + " uses " + name;
@@ -125,11 +125,13 @@ struct Attack : Move {
             }
             else{
                 dealt = damage + (rand() % (damage/3));
+                dealt = damage + ((attacker.get_strength() * damage)/100);
                 dealt = (dealt*(100-victim.get_defense()))/100;
             }
         
             victim.modify_health(-dealt);
-            return attacker.get_name() + " uses " + name + " on " + victim.get_name() + " dealing " + to_string(dealt) + " damage!";
+            ret_str += attacker.get_name() + " uses " + name + " on " + victim.get_name() + " dealing " + to_string(dealt) + " damage!";
+            return ret_str;
         }
     
 
@@ -159,7 +161,20 @@ struct Macarena : Attack {
 };
 
 struct Charge : Stat {
+    protected:
+        static constexpr int power = 2;
+        static constexpr int acc = 100;
+        static constexpr int cost = 0;
+        static inline string name = "Charge";
     
+    public:
+        Charge(string title = name, int pwr = power, int accuracy = acc, int cst = cost) : Stat{title, pwr, accuracy, cst}
+        {}
+
+        string trigger(Creature& attacker){
+            attacker.modify_energy(2);
+            return attacker.get_name() + " uses " + name + " and gains " + to_string(power + 1) + " energy!";
+        }
 };
 
 
