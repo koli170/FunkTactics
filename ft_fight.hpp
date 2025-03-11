@@ -80,19 +80,30 @@ bool start_fight(Player& player){
             }
         }
 
+        // SELECT TARGET
         selected_target = -1;
-        while (selected_target < 1 || selected_target > static_cast<int>(enemies.size())){
-            cout << "Select target: ";
-            cin >> selected_target;
-            if (selected_target < 1 || selected_target > static_cast<int>(enemies.size())){
-                cout << "Invalid Target" << endl << endl;
-            }
-        }
-        cout << endl;
 
-        cout << player.target(*enemies[selected_target-1], selected_move-1) << endl;
+        if (player.known_moves[selected_move-1]->has_targets()){
+            while (selected_target < 1 || selected_target > static_cast<int>(enemies.size())){
+                cout << "Select target: ";
+                cin >> selected_target;
+                if (selected_target < 1 || selected_target > static_cast<int>(enemies.size())){
+                    cout << "Invalid Target" << endl << endl;
+                }
+            }
+            cout << endl;
+
+            // DO MOVE
+            cout << player.target(*enemies[selected_target-1], selected_move-1) << endl;
+
+        }
+        // DO MOVE IF NOT TARGETED
+        else {
+            player.target(selected_move-1);
+        }
 
         counter = 0;
+        // CHECK IF ENEMIES DIED
         for (auto enemy = enemies.begin(); enemy != enemies.end();) {
             if ((*enemy)->get_health() <= 0) {
                 cout << (*enemy)->get_name() << " has been \033[1;31mOUT FUNKED!\033[0m" << endl;
@@ -104,10 +115,12 @@ bool start_fight(Player& player){
 
         cout << endl;
 
+        // CHECK IF ALL ENEMIES DEAD
         if (enemies.size() == 0){
             return true;
         }
 
+        // ENEMIES ATTACK
         for(const auto& enemy : enemies){
             cout << enemy->target(player) << endl;
             if (player.get_health() == 0){

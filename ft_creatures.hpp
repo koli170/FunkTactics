@@ -31,7 +31,8 @@ string funkify(string name){
         case 'K': case 'k': name = "Kickin' " + name; break;
         case 'L': case 'l': name = "Lo-fi " + name; break;
         case 'M': case 'm': name = "Melodic " + name; break;
-        case 'N': case 'n': name = "Omni " + name; break;
+        case 'N': case 'n': name = "Nautical " + name; break;
+        case 'O': case 'o': name = "Omni " + name; break;
         case 'P': case 'p': name = "Phat " + name; break;
         case 'Q': case 'q': name = "Quick " + name; break;
         case 'R': case 'r': name = "Retro " + name; break;
@@ -93,6 +94,9 @@ struct Creature {
         }
 
         virtual ~Creature() = default;
+        virtual string target(int selected_move){
+            return this->get_name() + " uses move " + to_string(selected_move);
+        }
         virtual string target(Creature& victim){
             return this->get_name() + " targets " + victim.get_name();
         }
@@ -149,6 +153,15 @@ struct Player : Creature {
                 count++;
             }
             return ret_str;
+        }
+        string target(int move_number){
+            if (known_moves.size() <= 0){ 
+                return "No moves";
+            }
+            if (move_number < 0 || move_number > static_cast<int>(known_moves.size())){
+                return "Invalid move";
+            }
+            return known_moves[move_number]->target(*this);
         }
 
         string target(Creature& victim, int move_number){
