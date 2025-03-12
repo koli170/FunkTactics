@@ -10,10 +10,10 @@ using namespace std;
 int main() {
     std::srand(std::time({}));
 
-    GrooveGoblin kyle = GrooveGoblin("Kyle");
-    GrooveGoblin dave = GrooveGoblin("Dave");
-    DiscoDevil cora = DiscoDevil("Coraxxus, Eater of All");
-    DiscoDevil tar = DiscoDevil("Tarmacklemoore, Singer of Wonderwall");
+    //GrooveGoblin kyle = GrooveGoblin("Kyle");
+    //GrooveGoblin dave = GrooveGoblin("Dave");
+    //DiscoDevil cora = DiscoDevil("Coraxxus, Eater of All");
+    //DiscoDevil tar = DiscoDevil("Tarmacklemoore, Singer of Wonderwall");
 
     string player_name;
     cout << "Input name: ";

@@ -67,7 +67,7 @@ struct Move {
         }
 
         string get_stats(){
-            return name + "\tPWR: " + to_string(power) + "   ACC: " + to_string(accuracy) + "   CST: " + to_string(cost);
+            return name + "\tPWR: " + to_string(power) + "  \tACC: " + to_string(accuracy) + "  \tCST: " + to_string(cost);
         }
 
         string get_name(){
@@ -88,10 +88,11 @@ struct Stat : Move {
         int power;
         int accuracy;
         int cost;
-        bool targets = false;
+        bool targets;
 
     public:
-        Stat(string name, int pwr, int acc = 100, int cst = 0) : Move{name, cst}, power{pwr}, accuracy{acc}, cost{cst}
+        Stat(string name, int pwr, int acc = 100, int cst = 0, bool trgts = false) : 
+            Move{name, cst, pwr, acc, trgts}, power{pwr}, accuracy{acc}, cost{cst}, targets{trgts}
         {}
 
         virtual string trigger(Creature& attacker){
@@ -160,20 +161,38 @@ struct Macarena : Attack {
         {}
 };
 
-struct Charge : Stat {
+struct PumpUp : Stat {
     protected:
         static constexpr int power = 2;
         static constexpr int acc = 100;
         static constexpr int cost = 0;
-        static inline string name = "Charge";
+        static inline string name = "Pump it Up";
     
     public:
-        Charge(string title = name, int pwr = power, int accuracy = acc, int cst = cost) : Stat{title, pwr, accuracy, cst}
+        PumpUp(string title = name, int pwr = power, int accuracy = acc, int cst = cost) : Stat{title, pwr, accuracy, cst}
         {}
 
         string trigger(Creature& attacker){
-            attacker.modify_energy(2);
+            attacker.modify_energy(power);
             return attacker.get_name() + " uses " + name + " and gains " + to_string(power + 1) + " energy!";
+        }
+};
+
+struct TakeFive : Stat {
+    protected:
+        static constexpr int power = 40;
+        static constexpr int acc = 100;
+        static constexpr int cost = 0;
+        static inline string name = "Take Five";
+    
+    public:
+        TakeFive(string title = name, int pwr = power, int accuracy = acc, int cst = cost) : Stat{title, pwr, accuracy, cst}
+        {}
+
+        string trigger(Creature& attacker){
+            int heal_amount = power + (rand() % (power/4));
+            attacker.modify_health(heal_amount);
+            return attacker.get_name() + " uses " + name + " and gains " + to_string(heal_amount) + " health!";
         }
 };
 

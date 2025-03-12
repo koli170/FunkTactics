@@ -142,7 +142,9 @@ struct Player : Creature {
         {
             known_moves.push_back(make_unique<JazzHands>());
             known_moves.push_back(make_unique<Macarena>());
-            known_moves.push_back(make_unique<Charge>());
+            known_moves.push_back(make_unique<PumpUp>());
+            known_moves.push_back(make_unique<TakeFive>());
+            
         }
 
         string list_moves(){
@@ -197,8 +199,19 @@ struct Enemy : Creature {
     public:
         vector<unique_ptr<Move>> known_moves;
         string target(Creature& victim){
-            if (known_moves.size() > 0){ 
-                return known_moves[rand() % static_cast<int>(known_moves.size())]->target(*this, victim);
+            if (known_moves.size() > 0){
+                bool valid_move = false;
+                int selected_move;
+                while (!valid_move){
+                    selected_move = rand() % static_cast<int>(known_moves.size());
+                    if (known_moves[selected_move]->get_cost() <= get_energy()){
+                        valid_move = true;
+                    }
+                }
+                if (known_moves[selected_move]->has_targets()){
+                    return known_moves[selected_move]->target(*this, victim);
+                }
+                return known_moves[selected_move]->target(*this);
             }
             return "No moves";
         }
@@ -211,13 +224,16 @@ struct GrooveGoblin : Enemy {
         static constexpr int health_extra = 20;
         static constexpr int strength = 5;
         static constexpr int defense = 5;
+        static const vector<string> name_list;
     public:
-        GrooveGoblin(string name) : Enemy{"Groove Goblin " + name, health_base, health_extra, strength, defense}
+        GrooveGoblin() : Enemy{"Groove Goblin " + name_list[rand() % name_list.size()], health_base, health_extra, strength, defense}
         {
             known_moves.push_back(make_unique<JazzHands>());
             known_moves.push_back(make_unique<Macarena>());
         }
 };
+
+const vector<string> GrooveGoblin::name_list = {"Gary", "Guppy", "Grumpy", "Grechen", "Gumbi", "Giuseppe", "Gunther"};
 
 struct DiscoDevil : Enemy {
     protected:
@@ -225,11 +241,17 @@ struct DiscoDevil : Enemy {
         static constexpr int health_extra = 40;
         static constexpr int strength = 15;
         static constexpr int defense = 20;
+        static const vector<string> name_list;
     public:
-        DiscoDevil(string name) : Enemy{"Disco Devil " + name, health_base, health_extra, strength, defense}
+        DiscoDevil() : Enemy{"Disco Devil " + name_list[rand() % name_list.size()], health_base, health_extra, strength, defense}
         {
             known_moves.push_back(make_unique<JazzHands>());
+            known_moves.push_back(make_unique<Macarena>());
+            known_moves.push_back(make_unique<PumpUp>());
+            known_moves.push_back(make_unique<TakeFive>());
         }
 };
+
+const vector<string> DiscoDevil::name_list = {"Dan", "Darmacklemoore", "Darnell", "Dizzy", "Daraxxus"};
 
 #endif
