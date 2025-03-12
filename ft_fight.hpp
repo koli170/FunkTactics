@@ -9,6 +9,7 @@
 
 #include "ft_creatures.hpp"
 #include "ft_moves.hpp"
+#include "ft_drawer.hpp"
 
 using std::cin;
 using std::cout;
@@ -50,6 +51,7 @@ bool start_fight(Player& player){
 
     // RUN FIGHT
     while (player.get_health() > 0){
+        battle_state(player);
         counter = 1;
         cout << "-------------------- ENEMY STATUS --------------------" << endl;
         for(const auto& enemy : enemies){
@@ -61,6 +63,8 @@ bool start_fight(Player& player){
         cout << "------------------- PLAYER STATUS! -------------------" << endl;
         cout << player.get_name() << "\tHP: " << to_string(player.get_health()) << "   ENG: "  
             << to_string(player.get_energy()) << "/" << to_string(player.get_max_energy()) << endl;
+        cout << draw_player_hp(player);
+        cout << draw_energy(player);
         cout << endl;
 
         cout << "-------------------- SELECT MOVE! --------------------" << endl;
