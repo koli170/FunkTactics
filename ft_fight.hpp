@@ -26,6 +26,8 @@ bool start_fight(Player& player){
     int selected_move;
     int selected_target;
     int counter;
+    string buffer;
+    string message = "";
 
     // GENERATE ENEMIES
     vector<unique_ptr<Creature>> enemies;
@@ -41,44 +43,50 @@ bool start_fight(Player& player){
     }
     // ANNOUNCE FIGHT
     counter = 1;
-    cout << "----------------- A FIGHT HAS STARTED! ----------------" << endl;
-    cout << "You encounter " << enemies.size() << " dancers!" << endl;
+    message = "";
+    message += "A FIGHT HAS STARTED!\n\n";
+    message += "You encounter " + to_string(enemies.size()) + " dancers!\n\n";
     for(const auto& enemy : enemies){
-        cout << to_string(counter) << ". " << enemy->get_name() << endl;
+        message += to_string(counter) + ". " + enemy->get_name() + "\n";
         counter++;
     }
-    cout << endl;
+
 
     // RUN FIGHT
     while (player.get_health() > 0){
-        battle_state(player);
-        counter = 1;
-        cout << "-------------------- ENEMY STATUS --------------------" << endl;
-        for(const auto& enemy : enemies){
-            cout << to_string(counter) << ".  HP: " << to_string(enemy->get_health()) << "\t" << enemy->get_name() << endl;
-            counter++;
-        }
-        cout << endl;
+        message += "\nPress ENTER to continue!";
+        battle_state(player, message, enemies);
+        cin.ignore();
+        getline(cin, buffer);
+        
+        // counter = 1;
+        // cout << "-------------------- ENEMY STATUS --------------------" << endl;
+        // for(const auto& enemy : enemies){
+        //     cout << to_string(counter) << ".  HP: " << to_string(enemy->get_health()) << "\t" << enemy->get_name() << endl;
+        //     counter++;
+        // }
+        // cout << endl;
 
-        cout << "------------------- PLAYER STATUS! -------------------" << endl;
-        cout << player.get_name() << "\tHP: " << to_string(player.get_health()) << "   ENG: "  
-            << to_string(player.get_energy()) << "/" << to_string(player.get_max_energy()) << endl;
-        cout << endl;
+        // cout << "------------------- PLAYER STATUS! -------------------" << endl;
+        // cout << player.get_name() << "\tHP: " << to_string(player.get_health()) << "   ENG: "  
+        //     << to_string(player.get_energy()) << "/" << to_string(player.get_max_energy()) << endl;
+        // cout << endl;
 
-        cout << "-------------------- SELECT MOVE! --------------------" << endl;
+        message += "SELECT YOUR MOVE!\n\n";
         selected_move = -1;
         bool valid = false;
         while (!valid){
             valid = true;
-            cout << player.list_moves_advanced();
-            cout << "Select move: ";
+            message += player.list_moves_advanced();
+            message += "\nType in the number of the move you want to use\n\n";
+            battle_state(player, message, enemies);
             cin >> selected_move;
             if (selected_move < 1 || selected_move > static_cast<int>(player.known_moves.size())){
-                cout << "Invalid Move" << endl << endl;
+                message += "INVALID MOVE, PLEASE CHOOSE ANOTHER\n\n";
                 valid = false;
             }
             else if (player.known_moves[selected_move-1]->get_cost() > player.get_energy()){
-                cout << "Not Enough Energy" << endl << endl;
+                message += "NOT ENOUGH ENERGY FOR THIS MOVE :(\n\n";
                 valid = false;
             }
         }
@@ -88,50 +96,63 @@ bool start_fight(Player& player){
 
         if (player.known_moves[selected_move-1]->has_targets()){
             while (selected_target < 1 || selected_target > static_cast<int>(enemies.size())){
-                cout << "Select target: ";
+                message += "Select target: \n\n";
+                counter = 1;
+                for(const auto& enemy : enemies){
+                    message += to_string(counter) + ". " + enemy->get_name() + "\n";
+                    counter++;
+                }
+                battle_state(player, message, enemies);
                 cin >> selected_target;
                 if (selected_target < 1 || selected_target > static_cast<int>(enemies.size())){
-                    cout << "Invalid Target" << endl << endl;
+                    message += "INVALID TARGET, PLEASE CHOOSE ANOTHER\n\n";
                 }
             }
-            cout << endl;
 
             // DO MOVE
-            cout << player.target(*enemies[selected_target-1], selected_move-1) << endl;
+            message += player.target(*enemies[selected_target-1], selected_move-1) + "\n\n";
 
         }
         // DO MOVE IF NOT TARGETED
         else {
-            cout << player.target(selected_move-1) << endl;
+            message += player.target(selected_move-1) + "\n\n";
         }
 
         counter = 0;
         // CHECK IF ENEMIES DIED
         for (auto enemy = enemies.begin(); enemy != enemies.end();) {
             if ((*enemy)->get_health() <= 0) {
-                cout << (*enemy)->get_name() << " has been \033[1;31mOUT FUNKED!\033[0m" << endl;
+                message += (*enemy)->get_name() + " has been OUT FUNKED!\n";
                 enemy = enemies.erase(enemy);
             } else {
                 enemy++;
             }
         }
 
-        cout << endl;
+        message += "\n";
 
         // CHECK IF ALL ENEMIES DEAD
         if (enemies.size() == 0){
+            message += "You have out funked your enemies!\n";
+            message += "GROOVE ON BY PRESSING ENTER\n";
+            battle_state(player, message, enemies);
+            cin.ignore();
+            getline(cin, buffer);
             return true;
         }
 
         // ENEMIES ATTACK
         for(const auto& enemy : enemies){
-            cout << enemy->target(player) << endl;
+            message += enemy->target(player) + "\n";
             if (player.get_health() == 0){
+                message += player.get_name() + " has been OUT FUNKED!\n\n";
+                message += "YOU HAVE LOST YOUR GROOVE, GET OFF THE STAGE BY PRESSING ENTER\n";
+                battle_state(player, message, enemies);
+                cin.ignore();
+                getline(cin, buffer);
                 return false;
             }
         }
-        cout << endl;
-
         
     }
 

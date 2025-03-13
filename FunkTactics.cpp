@@ -27,8 +27,6 @@ int main() {
     cin >> player_name;
     Player pl = Player(player_name);
 
-    battle_state(pl);
-
     cout << start_fight(pl);
 
     

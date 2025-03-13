@@ -67,7 +67,7 @@ struct Move {
         }
 
         string get_stats(){
-            return name + "\tPWR: " + to_string(power) + "  \tACC: " + to_string(accuracy) + "  \tCST: " + to_string(cost);
+            return name + "  PWR: " + to_string(power) + "  ACC: " + to_string(accuracy) + "  CST: " + to_string(cost);
         }
 
         string get_name(){

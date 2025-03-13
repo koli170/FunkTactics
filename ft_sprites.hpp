@@ -103,6 +103,36 @@ string ENEMY_TEST_BOX =
 "║                           ║\n"
 "╚═══════════════════════════╝\n";
 
+string ENEMY_BOX_EMPTY =
+"                             \n"
+"                             \n"
+"                             \n"
+"                             \n"
+"                             \n"
+"                             \n"
+"                             \n"
+"                             \n"
+"                             \n"
+"                             \n"
+"                             \n"
+"                             \n"
+"                             \n";
+
+string GROOVE_GOBLIN_SPRITE =
+"                             \n"
+"                             \n"
+"                             \n"
+"▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄\n"
+" ███████████████████████████ \n"
+"   ▀█████████████████████▀   \n"
+"      █████████████████      \n"
+"      ▀███████████████▀      \n"
+"         ▀█████████▀         \n"
+"                             \n"
+"                             \n"
+"                             \n"
+"                             \n";
+                                
 string ENEMY_SIDE_L =
 "║        \n"
 "║        \n"
@@ -135,6 +165,22 @@ string ENEMY_SIDE_R =
 "         ║\n"
 "         ║\n";
 
+string ENEMY_SIDE_L_SMALL =
+"║        \n"
+"║        \n"
+"║        \n";
+
+string ENEMY_SIDE_L_LINE =
+"║        \n";
+
+string ENEMY_SIDE_R_SMALL =
+"         ║\n"
+"         ║\n"
+"         ║\n";
+
+string ENEMY_SIDE_R_LINE =
+"         ║\n";
+
 string ENEMY_SPLIT = 
 "    \n"
 "    \n"
@@ -150,13 +196,27 @@ string ENEMY_SPLIT =
 "    \n"
 "    \n";
 
+string ENEMY_SPLIT_SMALL = 
+"    \n"
+"    \n"
+"    \n";
+
+string ENEMY_SPLIT_LINE =
+"    \n";
+
+string ENEMY_NO_HEALTH =
+"                             \n"
+"                             \n"
+"                             \n";
+
 string FIGHT_MIDDLE = 
-"║                                                                                                                ║\n"
-"║                                                                                                                ║\n"
 "║                                                                                                                ║\n"
 "╠═════════════════════════════════════════════════════════════════════════╦══════════════════════════════════════╣\n";
 
-string FIGHT_DATA_L =
+string FIGHT_DATA_L_LINE =
+"║                                                                         ║\n";
+
+string FIGHT_DATA_L_FILL =
 "║                                                                         ║\n"
 "║                                                                         ║\n"
 "║                                                                         ║\n"
@@ -174,18 +234,8 @@ string FIGHT_DATA_L =
 "║                                                                         ║\n"
 "║                                                                         ║\n";
 
-string FIGHT_DATA_R_FILL =
-"                                      ║\n"
-"                                      ║\n"
-"                                      ║\n"
-"                                      ║\n"
-"                                      ║\n"
-"                                      ║\n"
-"                                      ║\n"
+string FIGHT_DATA_R_LINE =
 "                                      ║\n";
-
-
-
 
 
 string FIGHT_BOT =

@@ -6,6 +6,8 @@
 #include <algorithm>
 #include <vector>
 
+#include "ft_sprites.hpp"
+
 
 using std::string;
 using std::vector;
@@ -57,9 +59,17 @@ struct Creature {
         int curr_energy;
         int defense;
         int strength;
+        string sprite;
 
-        Creature(string name, int health_base = 0, int defense = 10, int strength = 10, int energy = 4)
-            : name{name}, max_health{health_base}, curr_health{max_health}, max_energy{energy}, curr_energy{0}, defense{defense}, strength{strength}
+        Creature(string name, int health_base = 0, int defense = 10, int strength = 10, int energy = 4, string sprite = ENEMY_BOX_EMPTY)
+            : name{name}, 
+            max_health{health_base}, 
+            curr_health{max_health}, 
+            max_energy{energy}, 
+            curr_energy{0}, 
+            defense{defense}, 
+            strength{strength},
+            sprite{sprite}
         {}
 
 
@@ -92,6 +102,10 @@ struct Creature {
 
         string get_name(){
             return name;
+        }
+        
+        string get_sprite(){
+            return sprite;
         }
 
         virtual ~Creature() = default;
@@ -187,8 +201,8 @@ struct Player : Creature {
 
 struct Enemy : Creature {
     protected:
-        Enemy(string name, int h_base, int h_extra, int strength, int defense) : 
-            Creature{name, h_base + (rand() % h_extra), defense, strength}
+        Enemy(string name, int h_base, int h_extra, int strength, int defense, string sprite) : 
+            Creature{name, h_base + (rand() % h_extra), defense, strength, 4, sprite}
         {}
 
     public:
@@ -220,15 +234,17 @@ struct GrooveGoblin : Enemy {
         static constexpr int strength = 5;
         static constexpr int defense = 5;
         static const vector<string> name_list;
+        static const string sprite;
     public:
-        GrooveGoblin() : Enemy{"Groove Goblin " + name_list[rand() % name_list.size()], health_base, health_extra, strength, defense}
+        GrooveGoblin() : Enemy{"Groove Goblin " + name_list[rand() % name_list.size()], health_base, health_extra, strength, defense, sprite}
         {
             known_moves.push_back(make_unique<JazzHands>());
             known_moves.push_back(make_unique<Macarena>());
         }
 };
 
-const vector<string> GrooveGoblin::name_list = {"Gary", "Guppy", "Grumpy", "Grechen", "Gumbi", "Giuseppe", "Gunther"};
+const vector<string> GrooveGoblin::name_list = {"Gary", "Guppy", "Grumpy", "Grechen", "Gumbi", "Giuseppe", "Gunther", "Gorganthal"};
+const string GrooveGoblin::sprite = GROOVE_GOBLIN_SPRITE;
 
 struct DiscoDevil : Enemy {
     protected:
@@ -237,8 +253,9 @@ struct DiscoDevil : Enemy {
         static constexpr int strength = 15;
         static constexpr int defense = 20;
         static const vector<string> name_list;
+        static const string sprite;
     public:
-        DiscoDevil() : Enemy{"Disco Devil " + name_list[rand() % name_list.size()], health_base, health_extra, strength, defense}
+        DiscoDevil() : Enemy{"Disco Devil " + name_list[rand() % name_list.size()], health_base, health_extra, strength, defense, sprite}
         {
             known_moves.push_back(make_unique<JazzHands>());
             known_moves.push_back(make_unique<Macarena>());
@@ -248,5 +265,6 @@ struct DiscoDevil : Enemy {
 };
 
 const vector<string> DiscoDevil::name_list = {"Dan", "Darmacklemoore", "Darnell", "Dizzy", "Daraxxus"};
+const string DiscoDevil::sprite = ENEMY_TEST_BOX;
 
 #endif
