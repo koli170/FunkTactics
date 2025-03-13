@@ -6,3 +6,6 @@ OUTNAME = FunkTactics
 
 all:
 	$(CPP) -o $(OUTNAME) $(TARGETS) $(FLAGS) $(DEBUG)
+
+clean :
+	-rm $(OUTNAME)
