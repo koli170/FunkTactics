@@ -182,9 +182,8 @@ string FIGHT_DATA_R_FILL =
 "                                      ║\n"
 "                                      ║\n"
 "                                      ║\n"
-"                                      ║\n"
-"                                      ║\n"
 "                                      ║\n";
+
 
 
 

@@ -40,7 +40,14 @@ string sprite_combine(string left_sprite, string right_sprite){
     }
 
     return return_str;
+}
 
+string pad_space(string my_str, int my_len){
+    int spaces_to_add = my_len - static_cast<int>(my_str.length());
+    for (int i = 0; i < spaces_to_add; i++){
+        my_str += " ";
+    }
+    return my_str;
 }
 
 string draw_player_hp(Creature& player){
@@ -107,13 +114,17 @@ void title_screen(){
 }
 
 void battle_state(Creature& player){
+    int right_data_width = 39;
+    string health_string = to_string(player.get_health()) + "/" + to_string(player.get_max_health());
+    string energy_string = to_string(player.get_energy()) + "/" + to_string(player.get_max_energy());
     system(CLEAR_COMMAND);
     string energy_bar_and_wall = sprite_combine("  \n  \n  \n", sprite_combine(draw_energy(player), "   ║\n   ║\n   ║\n"));
     string health_bar_and_wall = sprite_combine(draw_player_hp(player), "║\n║\n║\n");
     cout << TITLE_TOP;
     cout << sprite_combine(sprite_combine(sprite_combine(sprite_combine(sprite_combine(sprite_combine(ENEMY_SIDE_L, ENEMY_TEST_BOX), ENEMY_SPLIT), ENEMY_TEST_BOX), ENEMY_SPLIT), ENEMY_TEST_BOX), ENEMY_SIDE_R);
     cout << FIGHT_MIDDLE;
-    cout << sprite_combine(FIGHT_DATA_L, FIGHT_DATA_R_FILL + energy_bar_and_wall + health_bar_and_wall);
+    cout << sprite_combine(FIGHT_DATA_L, FIGHT_DATA_R_FILL + pad_space(("    Health: " + health_string), right_data_width-1) + "║\n" 
+        + health_bar_and_wall + pad_space("    Energy: " + energy_string, right_data_width-1) + "║\n" + energy_bar_and_wall);
     cout << FIGHT_BOT;
 
 }

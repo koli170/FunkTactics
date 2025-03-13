@@ -63,8 +63,6 @@ bool start_fight(Player& player){
         cout << "------------------- PLAYER STATUS! -------------------" << endl;
         cout << player.get_name() << "\tHP: " << to_string(player.get_health()) << "   ENG: "  
             << to_string(player.get_energy()) << "/" << to_string(player.get_max_energy()) << endl;
-        cout << draw_player_hp(player);
-        cout << draw_energy(player);
         cout << endl;
 
         cout << "-------------------- SELECT MOVE! --------------------" << endl;
