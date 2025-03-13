@@ -27,7 +27,9 @@ int main() {
     cin >> player_name;
     Player pl = Player(player_name);
 
-    cout << start_fight(pl);
+    if (start_fight(pl)){
+        start_fight(pl);
+    };
 
     
 

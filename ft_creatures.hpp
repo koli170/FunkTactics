@@ -265,6 +265,6 @@ struct DiscoDevil : Enemy {
 };
 
 const vector<string> DiscoDevil::name_list = {"Dan", "Darmacklemoore", "Darnell", "Dizzy", "Daraxxus"};
-const string DiscoDevil::sprite = ENEMY_TEST_BOX;
+const string DiscoDevil::sprite = DISCO_DEVIL_SPRITE;
 
 #endif
