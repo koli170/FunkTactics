@@ -143,7 +143,7 @@ std::ostream& operator<<(std::ostream& outs, const Creature& creature) {
 struct Player : Creature {
     protected:
         static constexpr int health = 100;
-        static constexpr int defense = 30;
+        static constexpr int defense = 40;
         static constexpr int strength = 20;
     public:
         vector<unique_ptr<Move>> known_moves;

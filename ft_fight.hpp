@@ -6,6 +6,7 @@
 #include <string>
 #include <algorithm>
 #include <vector>
+#include <limits>
 
 #include "ft_creatures.hpp"
 #include "ft_moves.hpp"
@@ -56,26 +57,13 @@ bool start_fight(Player& player){
     while (player.get_health() > 0){
         message += "\nPress ENTER to continue!";
         battle_state(player, message, enemies);
-        cin.ignore();
+        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         getline(cin, buffer);
         
-        // counter = 1;
-        // cout << "-------------------- ENEMY STATUS --------------------" << endl;
-        // for(const auto& enemy : enemies){
-        //     cout << to_string(counter) << ".  HP: " << to_string(enemy->get_health()) << "\t" << enemy->get_name() << endl;
-        //     counter++;
-        // }
-        // cout << endl;
-
-        // cout << "------------------- PLAYER STATUS! -------------------" << endl;
-        // cout << player.get_name() << "\tHP: " << to_string(player.get_health()) << "   ENG: "  
-        //     << to_string(player.get_energy()) << "/" << to_string(player.get_max_energy()) << endl;
-        // cout << endl;
-
         message += "SELECT YOUR MOVE!\n\n";
-        selected_move = -1;
         bool valid = false;
         while (!valid){
+            selected_move = -1;
             valid = true;
             message += player.list_moves_advanced();
             message += "\nType in the number of the move you want to use\n\n";
@@ -83,10 +71,14 @@ bool start_fight(Player& player){
             cin >> selected_move;
             if (selected_move < 1 || selected_move > static_cast<int>(player.known_moves.size())){
                 message += "INVALID MOVE, PLEASE CHOOSE ANOTHER\n\n";
+                cin.clear();
+                cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                 valid = false;
             }
             else if (player.known_moves[selected_move-1]->get_cost() > player.get_energy()){
                 message += "NOT ENOUGH ENERGY FOR THIS MOVE :(\n\n";
+                cin.clear();
+                cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                 valid = false;
             }
         }
@@ -105,6 +97,8 @@ bool start_fight(Player& player){
                 battle_state(player, message, enemies);
                 cin >> selected_target;
                 if (selected_target < 1 || selected_target > static_cast<int>(enemies.size())){
+                    cin.clear();
+                    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                     message += "INVALID TARGET, PLEASE CHOOSE ANOTHER\n\n";
                 }
             }
@@ -136,7 +130,7 @@ bool start_fight(Player& player){
             message += "You have out funked your enemies!\n";
             message += "GROOVE ON BY PRESSING ENTER\n";
             battle_state(player, message, enemies);
-            cin.ignore();
+            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             getline(cin, buffer);
             return true;
         }
@@ -148,7 +142,7 @@ bool start_fight(Player& player){
                 message += player.get_name() + " has been OUT FUNKED!\n\n";
                 message += "YOU HAVE LOST YOUR GROOVE, GET OFF THE STAGE BY PRESSING ENTER\n";
                 battle_state(player, message, enemies);
-                cin.ignore();
+                cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                 getline(cin, buffer);
                 return false;
             }

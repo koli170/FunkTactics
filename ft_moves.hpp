@@ -9,6 +9,27 @@
 using std::string;
 
 struct Move {
+    /* 
+    Base class for all moves, contains:
+    Variables
+        string name, the name of the move
+        int power, the power modifier of the move
+        int accuracy, the percentage chance that the move will succeed
+        int cost, the energy cost of the move
+        bool targets, states whether the move requires targets
+
+    Functions
+        Basic constructor
+        target(Creature& attacker, Creature& victim), base calculations for activating moves with targets
+        target(Creature& attacker), base calculations for activating moves without targets
+        string trigger(Creature& attacker, Creature& victim), triggers the effect of the move with targets
+        string trigger(Creature& attacker), triggers the effect of the move without targets
+        string get_stats(), returns a string containing the stats of the move
+        string get_name(), returns a string containing the name of the move
+        int get_cost(), returns the energy a move requires
+        bool has_targets(), returns whether the move requires targets
+
+    */
     protected:
         string name;
         int power;
@@ -17,7 +38,8 @@ struct Move {
         bool targets = false;
 
     public:
-        Move(string name, int cost = 0, int pwr = 10, int acc = 100, bool trgts = false) : name{name}, power{pwr}, cost{cost}, accuracy{acc}, targets{trgts}
+        Move(string name, int cost = 0, int pwr = 10, int acc = 100, bool trgts = false) : 
+        name{name}, power{pwr}, cost{cost}, accuracy{acc}, targets{trgts}
         {}
         
         virtual ~Move() = default;
@@ -84,6 +106,22 @@ struct Move {
 };
 
 struct Stat : Move {
+    /*
+    Base class for all moves that mainly effect creature stats:
+    Variables
+        int power, the power modifier of the move
+        int accuracy, the percentage chance that the move will succeed
+        int cost, the energy cost of the move
+        bool targets, states whether the move requires targets
+
+    Functions
+        Basic constructor
+        string trigger(Creature6 attacker), triggers the effect of the move without targets
+        
+    since no stat moves are targeted the class has no trigger for targets,
+    very easily implemented if needed for future moves
+    */
+
     protected:
         int power;
         int accuracy;
@@ -106,27 +144,45 @@ struct Stat : Move {
 };
 
 struct Attack : Move {
+    /*
+    Base class for all moves that mainly deal damage to creatures:
+    Variables
+        int crit_chance, the chance that the move will critical hit
+        int power, the power modifier of the move
+        int accuracy, the percentage chance that the move will succeed
+        int dealt, the damage dealt by the move
+        int cost, the energy cost of the move
+        bool targets, states whether the move requires targets
+
+    Functions
+        Basic constructor
+        string trigger(Creature& attacker, Creature& victim), triggers the effect of the move with targets
+
+    since all attack moves are targeted the class has no trigger for no targets,
+    very easily implemented if needed for future moves
+    */
     protected:
-        const int CRIT_CHANCE = 10;
-        int damage;
+        int crit_chance = 10;
+        int power;
         int accuracy;
         int dealt;
         int cost;
         bool targets = true;
 
     public:
-        Attack(string name, int dmg, int accuracy = 100, int cst = 0) : Move{name, cst, dmg, accuracy, true}, damage{dmg}, accuracy{accuracy}, cost{cst}
+        Attack(string name, int pwr, int accuracy = 100, int cst = 0) : 
+        Move{name, cst, pwr, accuracy, true}, power{pwr}, accuracy{accuracy}, cost{cst}
         {}
 
         virtual string trigger(Creature& attacker, Creature& victim){
             string ret_str = "";
-            if (rand() % CRIT_CHANCE == 0){
-                dealt = damage * 2;
+            if (rand() % crit_chance == 0){
+                dealt = power * 2;
                 ret_str += "CRIT! ";
             }
             else{
-                dealt = damage + (rand() % (damage/3));
-                dealt = damage + ((attacker.get_strength() * damage)/100);
+                dealt = power + (rand() % (power/3));
+                dealt = power + ((attacker.get_strength() * power)/100);
                 dealt = (dealt*(100-victim.get_defense()))/100;
             }
         
@@ -139,6 +195,12 @@ struct Attack : Move {
 };
 
 struct JazzHands : Attack {
+    /* 
+    A basic attack move that utilizes the base attack functions
+    Does 20 damage
+    Costs 0
+    Hits 90% of the time
+    */
     protected:
         static constexpr int damage = 20;
         static constexpr int acc = 90;
@@ -150,8 +212,14 @@ struct JazzHands : Attack {
 };
 
 struct Macarena : Attack {
+    /* 
+    A basic attack move that utilizes the base attack functions
+    Does 45 damage
+    Costs 2
+    Hits 75% of the time
+    */
     protected:
-        static constexpr int damage = 60;
+        static constexpr int damage = 45;
         static constexpr int acc = 75;
         static constexpr int cost = 2;
         static inline string name = "Macarena";
@@ -162,8 +230,13 @@ struct Macarena : Attack {
 };
 
 struct PumpUp : Stat {
+    /* 
+    A move that gives the user 3 energy total
+    Costs 0
+    Hits 100% of the time
+    */
     protected:
-        static constexpr int power = 2;
+        static constexpr int power = 3;
         static constexpr int acc = 100;
         static constexpr int cost = 0;
         static inline string name = "Pump it Up";
@@ -173,12 +246,17 @@ struct PumpUp : Stat {
         {}
 
         string trigger(Creature& attacker){
-            attacker.modify_energy(power);
+            attacker.modify_energy(power-1);
             return attacker.get_name() + " uses " + name + " and gains " + to_string(power + 1) + " energy!";
         }
 };
 
 struct TakeFive : Stat {
+    /* 
+    A move that heals the user 40+ health
+    Costs 0
+    Hits 100% of the time
+    */
     protected:
         static constexpr int power = 40;
         static constexpr int acc = 100;

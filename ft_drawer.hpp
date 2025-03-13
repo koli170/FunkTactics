@@ -21,9 +21,6 @@
 #include "ft_sprites.hpp"
 #include "ft_creatures.hpp"
 
-// INTERNET HEADERS
-#include "termcolor.hpp"
-
 using std::cout;
 using std::cin;
 using std::stringstream;
@@ -280,7 +277,22 @@ void battle_state(Creature& player, string& message, vector<unique_ptr<Creature>
     cout << FIGHT_BOT;
 
     message = "";
+}
 
+void game_over(){
+    string buffer;
+    system(CLEAR_COMMAND);
+    cout << GAME_OVER;
+    getline(cin, buffer);
+    system(CLEAR_COMMAND);
+}
+
+void victory(){
+    string buffer;
+    system(CLEAR_COMMAND);
+    cout << VICTORY;
+    getline(cin, buffer);
+    system(CLEAR_COMMAND);
 }
 
 #endif

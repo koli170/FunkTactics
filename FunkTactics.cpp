@@ -11,26 +11,34 @@ using namespace std;
 int main() {
     std::srand(std::time({}));
 
-    GrooveGoblin kyle = GrooveGoblin();
-    GrooveGoblin dave = GrooveGoblin();
-    DiscoDevil cora = DiscoDevil();
-    DiscoDevil tar = DiscoDevil();
-
     string player_name;
 
-    JazzHands jh = JazzHands();
+    int fight_amount = 3;
+    bool win = false;
 
-    screen_size_test();
     title_screen();
 
     cout << "Input name: ";
-    cin >> player_name;
+    getline(cin, player_name);
+
+    while (static_cast<int>(player_name.size()) > 15){
+        cout << "Please make sure the name is 15 characters or less: ";
+        getline(cin, player_name);
+    }
+
     Player pl = Player(player_name);
 
-    if (start_fight(pl)){
-        start_fight(pl);
-    };
+    for (int i = 0; i < fight_amount; i++){
+        win = start_fight(pl);
+        if (!win){
+            game_over();
+            break;
+        }
+    }
 
+    if (win){
+        victory();
+    }
     
 
     return 0;
