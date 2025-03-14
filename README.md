@@ -50,7 +50,7 @@ Heals the user
 - Tick - POW: 1   ACC: 100   COST: 0\
 Has a 50% chance for the user to not gain energy.
 
-- M.L.Bustdown - POW: 100   ACC: 100   COST: 4
+- M.L.Bustdown - POW: 100   ACC: 100   COST: 4\
 Increadibly strong attack move.
 
 ### Enemy list
