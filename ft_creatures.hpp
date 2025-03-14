@@ -335,4 +335,27 @@ const vector<string> DiscoDevil::name_list = {"Dan", "Darmacklemoore", "Darnell"
 // The sprite for the enemy
 const string DiscoDevil::sprite = DISCO_DEVIL_SPRITE;
 
+struct BustdownBomber : Enemy {
+    protected:
+        static constexpr int health_base = 110;
+        static constexpr int health_extra = 60;
+        static constexpr int strength = 15;
+        static constexpr int defense = 30;
+        static const vector<string> name_list;
+        static const string sprite;
+    public:
+        BustdownBomber() : Enemy{"Bustdown Bomber " + name_list[rand() % name_list.size()], health_base, health_extra, strength, defense, sprite}
+        {
+            // Known moves at start
+            known_moves.push_back(make_unique<Tick>());
+            known_moves.push_back(make_unique<MLBustdown>());
+        }
+};
+
+// The string of names, one is chosen at random on enemy creation.
+const vector<string> BustdownBomber::name_list = {"Bill", "Bob", "Bartholomew", "Barry", "Burgundy"};
+// The sprite for the enemy
+const string BustdownBomber::sprite = BUSTDOWN_BOMBER_SPRITE;
+
+
 #endif

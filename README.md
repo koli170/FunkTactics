@@ -47,6 +47,12 @@ Charges up 3 energy
 - Take five - POW: 40   ACC: 100   COST: 0\
 Heals the user
 
+- Tick - POW: 1   ACC: 100   COST: 0\
+Has a 50% chance for the user to not gain energy.
+
+- M.L.Bustdown - POW: 100   ACC: 100   COST: 4
+Increadibly strong attack move.
+
 ### Enemy list
 The enemies featured in this game are the following:
 
@@ -55,6 +61,9 @@ The basic grunt enemy, weak on its own but can be scary in packs. They have acce
 
 - Disco Devil - BASE HP: 90   DEF: 20   STR: 15\
 A stronger, more formiddable foe. Stronger in every way with even more moves to groove with. They aren't the smartest though. They have access to the moves Jazz Hands, Macarena, Pump it up, and Take five.
+
+- Bustdown Bomber - BASE HP 110   DEF: 30   STR: 20\
+A tanky hunk of gunpowder that sits idley, slowly gaining energy until it finally has enough to deal huge damage. The player does not know when its gaining energy and when its not. It has access to the moves Tick and M.L.Bustdown.
 
 
 ## Programmer Guide
@@ -77,7 +86,7 @@ Below that you will find the structs for the moves themselves. Each move is eith
 
 
 - ft_fight.hpp\
-The fight file handles the fights themselves. It has one function called start_fight which starts a fight. It starts by creating 1 - 3 enemies (2/3 chance goblin, 1/3 chance devil). Then it creates the fight announcement message and starts the fight. The fight is a while loop that goes through the players turn, enemy turn, win/loss check and then loop, it utilizes the strings returned by moves to display the messages of what the moves did. It mostly calls other functions and then passes messages and creature data to the battle_state function (battle_state is from ft_drawer). It returns a bool when done, true for player win, false for player loss.
+The fight file handles the fights themselves. It has one function called start_fight which starts a fight. It starts by creating 1 - 3 enemies (1/2 chance goblin, 1/4 chance devil, 1/4 chance bomber). Then it creates the fight announcement message and starts the fight. The fight is a while loop that goes through the players turn, enemy turn, win/loss check and then loop, it utilizes the strings returned by moves to display the messages of what the moves did. It mostly calls other functions and then passes messages and creature data to the battle_state function (battle_state is from ft_drawer). It returns a bool when done, true for player win, false for player loss.
 
 
 - ft_drawer.hpp\
@@ -106,7 +115,7 @@ This file contains all the sprites used in the game.
 
 ### Notes
 System is used but ONLY TO CLEAR THE SCREEN. This is used for drawing functions, i am not aware of a better solution.\
-At the top of the ft_drawer.hpp file the clear command is defined according to the system. I am yet to test this on other systems, but it does work on my MAC, if this causes issues you can head to the top of the ft_drawer.hpp file and simplu define CLEAR_COMMAND as a string representation of the command used on your system to clear the terminal screen.
+At the top of the ft_drawer.hpp file the clear command is defined according to the system. I am yet to test this on other systems, but it does work on my MAC, if this causes issues you can head to the top of the ft_drawer.hpp file and simply define CLEAR_COMMAND as a string representation of the command used on your system to clear the terminal screen.
 
 ### Known Bugs
 There are a few bugs that i am aware of but they are really minor and i deemed them to be not worth the time to tackle.
@@ -114,7 +123,7 @@ There are a few bugs that i am aware of but they are really minor and i deemed t
 - When a fight starts the player must press ENTER twice to continue.
 
 ### Future Ideas
-If i ever continue this project here are some things i might include
+If I ever continue this project here are some things i might include
 
 - More moves
 - More enemies

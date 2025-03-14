@@ -35,8 +35,12 @@ bool start_fight(Player& player){
     
     int enemy_count = (rand() % 3);
     for (int n = 0; n <= enemy_count; n++){
-        if ((rand() % 3) == 2){
+        int rand_num = (rand() % 4);
+        if (rand_num == 2){
             enemies.push_back(make_unique<DiscoDevil>());
+        }
+        else if (rand_num == 3){
+            enemies.push_back(make_unique<BustdownBomber>());
         }
         else{
             enemies.push_back(make_unique<GrooveGoblin>());

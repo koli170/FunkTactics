@@ -274,5 +274,46 @@ struct TakeFive : Stat {
         }
 };
 
+struct Tick : Stat {
+    /* 
+    A move that has a 50% chance to give energy
+    Costs 0
+    Hits 100% of the time
+    */
+    protected:
+        static constexpr int power = 1;
+        static constexpr int acc = 100;
+        static constexpr int cost = 0;
+        static inline string name = "Tick";
+    
+    public:
+        Tick(string title = name, int pwr = power, int accuracy = acc, int cst = cost) : Stat{title, pwr, accuracy, cst}
+        {}
+
+        string trigger(Creature& attacker){
+            if (rand() % 2 == 0){
+                attacker.modify_energy(-1);
+            }
+            return attacker.get_name() + " uses " + name + " and their fuse sizzles!";
+        }
+};
+
+struct MLBustdown : Attack {
+    /* 
+    A move that has a 50% chance to give energy
+    Costs 0
+    Hits 100% of the time
+    */
+    protected:
+        static constexpr int power = 100;
+        static constexpr int acc = 100;
+        static constexpr int cost = 4;
+        static inline string name = "Major League Bustdown";
+    
+    public:
+        MLBustdown(string title = name, int pwr = power, int accuracy = acc, int cst = cost) : Attack{title, pwr, accuracy, cst}
+        {}
+};
+
 
 #endif
