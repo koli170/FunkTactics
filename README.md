@@ -117,6 +117,12 @@ This file contains all the sprites used in the game.
 System is used but ONLY TO CLEAR THE SCREEN. This is used for drawing functions, i am not aware of a better solution.\
 At the top of the ft_drawer.hpp file the clear command is defined according to the system. I am yet to test this on other systems, but it does work on my MAC, if this causes issues you can head to the top of the ft_drawer.hpp file and simply define CLEAR_COMMAND as a string representation of the command used on your system to clear the terminal screen.
 
+Text sprites taken from asciiart.eu\
+Font: Delta Corps Priest 1\
+Font Author: CoSMiC cHiLD
+
+Enemy sprites made by Kristján Orri (me)
+
 ### Known Bugs
 There are a few bugs that i am aware of but they are really minor and i deemed them to be not worth the time to tackle.
 - Using Icelandic letters in the player name causes the UI to have a gap.
