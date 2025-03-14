@@ -62,7 +62,7 @@ The basic grunt enemy, weak on its own but can be scary in packs. They have acce
 - Disco Devil - BASE HP: 90   DEF: 20   STR: 15\
 A stronger, more formiddable foe. Stronger in every way with even more moves to groove with. They aren't the smartest though. They have access to the moves Jazz Hands, Macarena, Pump it up, and Take five.
 
-- Bustdown Bomber - BASE HP 110   DEF: 30   STR: 20\
+- Bustdown Bomber - BASE HP 110   DEF: 30   STR: 25\
 A tanky hunk of gunpowder that sits idley, slowly gaining energy until it finally has enough to deal huge damage. The player does not know when its gaining energy and when its not. It has access to the moves Tick and M.L.Bustdown.
 
 
