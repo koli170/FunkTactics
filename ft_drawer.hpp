@@ -17,7 +17,6 @@
 #include <iostream>
 #include <sstream> 
 
-// MY HEADERS
 #include "ft_sprites.hpp"
 #include "ft_creatures.hpp"
 
@@ -27,6 +26,7 @@ using std::stringstream;
 using std::getline;
 
 string sprite_combine(string left_sprite, string right_sprite){
+    // Takes in two strings and combines them horizontally
     // ASSUMES EQUAL LINE COUNT
     string return_str = "";
     stringstream left_stream(left_sprite);
@@ -40,6 +40,7 @@ string sprite_combine(string left_sprite, string right_sprite){
 }
 
 string pad_space(string my_str, int my_len){
+    // Pads the end of a string with spaces until it reached given length
     int spaces_to_add = my_len - static_cast<int>(my_str.length());
     for (int i = 0; i < spaces_to_add; i++){
         my_str += " ";
@@ -48,6 +49,8 @@ string pad_space(string my_str, int my_len){
 }
 
 string pad_block(string my_string, int my_len, string start = "", string end = ""){
+    // Calls pad space on every line in the string
+    // Can add strings to the front and back of each line
     string ret_str = "";
     stringstream str_stream(my_string);
     while (getline(str_stream, my_string, '\n')){
@@ -57,6 +60,8 @@ string pad_block(string my_string, int my_len, string start = "", string end = "
 }
 
 string wrap_string(string my_string, int wrap_width){
+    // Wraps the string to be certain width
+    // Splits string into lines based on wrap width and spaces
     string ret_str = "";
     string buffer = "";
     stringstream str_stream(my_string);
@@ -77,6 +82,7 @@ string wrap_string(string my_string, int wrap_width){
 }
 
 int count_lines(string my_string){
+    // Counts the amount of lines in a string
     int count = 0;
     stringstream str_stream(my_string);
     while (getline(str_stream, my_string, '\n')){
@@ -87,7 +93,9 @@ int count_lines(string my_string){
 
 
 
-string draw_player_hp(Creature& player, int bar_size){
+string draw_hp_bar(Creature& player, int bar_size){
+    // Draws a healthbar for a given creature of given size.
+    // Colors it based on current health
     int squares_to_draw = (bar_size * player.get_health()) / player.get_max_health();
     string top = "╔═";
     string bot = "╚═";
@@ -129,6 +137,7 @@ string draw_player_hp(Creature& player, int bar_size){
 }
 
 string draw_energy(Creature& player){
+    // Draws an energt bar for a given creature, only used for player
     int squares_to_draw = player.get_energy();
     string top = "╔═══════╦═══════╦═══════╦═══════╗\n";
     string bot = "╚═══════╩═══════╩═══════╩═══════╝\n";
@@ -146,12 +155,13 @@ string draw_energy(Creature& player){
 }
 
 string draw_enemy_health(vector<unique_ptr<Creature>>& enemies, int enemy_health_bar_size){
+    // draws a string of health bars for all enemies in the fight
     int enemy_count = static_cast<int>(enemies.size());
     string enemy_health_bars;
     for (int i = 0; i < 3; i++){
         string filler = "";
         if (enemy_count > i){
-            filler = draw_player_hp(*enemies[i], enemy_health_bar_size);
+            filler = draw_hp_bar(*enemies[i], enemy_health_bar_size);
         }
         else{
             filler = ENEMY_NO_HEALTH;
@@ -170,6 +180,7 @@ string draw_enemy_health(vector<unique_ptr<Creature>>& enemies, int enemy_health
 }
 
 string draw_enemy_names(vector<unique_ptr<Creature>>& enemies, int name_bar_size){
+    // Draws a line consisting of all names of enemies in the fight
     int enemy_count = static_cast<int>(enemies.size());
     string enemy_names;
     for (int i = 0; i < 3; i++){
@@ -194,6 +205,7 @@ string draw_enemy_names(vector<unique_ptr<Creature>>& enemies, int name_bar_size
 }
 
 string draw_enemy_sprites(vector<unique_ptr<Creature>>& enemies){
+    // Draws the sprites of all enemies in the fight
     int enemy_count = static_cast<int>(enemies.size());
     string enemy_names;
     for (int i = 0; i < 3; i++){
@@ -217,11 +229,8 @@ string draw_enemy_sprites(vector<unique_ptr<Creature>>& enemies){
     return enemy_names;
 }
 
-void screen_size_test(){
-    //TODO: IMPLEMENT
-}
-
 void title_screen(){
+    // Draws the title screen
     system(CLEAR_COMMAND);
     cout << TITLE_TOP;
     cout << sprite_combine(sprite_combine(TITLE_WALL_L, TITLE), TITLE_WALL_R);
@@ -231,6 +240,7 @@ void title_screen(){
 }
 
 void battle_state(Creature& player, string& message, vector<unique_ptr<Creature>>& enemies){
+    // Draws the current battle state
     int right_data_width = 39;
     int left_data_width = 73;
     int left_data_height = 16;
@@ -241,7 +251,7 @@ void battle_state(Creature& player, string& message, vector<unique_ptr<Creature>
     string energy_string = to_string(player.get_energy()) + "/" + to_string(player.get_max_energy());
     system(CLEAR_COMMAND);
     string energy_bar_and_wall = sprite_combine("  \n  \n  \n", sprite_combine(draw_energy(player), "   ║\n   ║\n   ║\n"));
-    string health_bar_and_wall = sprite_combine(draw_player_hp(player, player_health_bar_size), "║\n║\n║\n");
+    string health_bar_and_wall = sprite_combine(draw_hp_bar(player, player_health_bar_size), "║\n║\n║\n");
     string right_data_data = FIGHT_DATA_R_LINE
                             + pad_space("    " + player.get_name() + "'s stats", right_data_width-1) + "║\n"
                             + FIGHT_DATA_R_LINE 
@@ -280,6 +290,7 @@ void battle_state(Creature& player, string& message, vector<unique_ptr<Creature>
 }
 
 void game_over(){
+    // Draws the game over screen
     string buffer;
     system(CLEAR_COMMAND);
     cout << GAME_OVER;
@@ -288,6 +299,7 @@ void game_over(){
 }
 
 void victory(){
+    // Draws the victory screen
     string buffer;
     system(CLEAR_COMMAND);
     cout << VICTORY;

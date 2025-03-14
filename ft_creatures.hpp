@@ -8,7 +8,6 @@
 
 #include "ft_sprites.hpp"
 
-
 using std::string;
 using std::vector;
 using std::max;
@@ -51,6 +50,38 @@ string funkify(string name){
 }
 
 struct Creature {
+    /*
+    Base class for all creatures:
+
+    Variables
+        string name, the name of the creatures
+        int max_health, the maximum health value of the creature
+        int curr_health, the current health value of the creature
+        int max_energy, the maximum energy value of the creature
+        int curr_energy, the current energy value of the creature
+        int defense, the defense value of the creature
+        int strength, the strength value of the creature
+        string sprite, the sprite of the creature
+
+    Functions
+        Base constructor
+        int get_health(), returns the current health value of the creature
+        int get_max_health(), returns the maximum health value of the creature
+        int get_energy(), returns the current energy value of the creature
+        int get_maximum_energy(), returns the maximum energy value of the creature
+        int get_defense(), returns the defense value of the creature
+        int get_strength(), returns the strength value of the creature
+        string get_name(), returns the name of the creature
+        string get_sprite(), returns the sprite of the creature
+        string target(int selected_move), targets itself with a move at index in its known_moves
+        string target(Creature& victim), targets a creature without specifying move, 
+                                        used for enemies since they use random moves
+        string target(Creature& victim, int selected_move), targets a creatue with a move at index in its known_moves
+        void modify_health(int value), adds the given value to the current health of the creature,
+                                        current health is always between 0 and max_health
+        void modify_energy(int value), adds the given value to the current energy of the creature,
+                                        current energy is always between 0 and max_energy
+    */
     protected:
         string name;
         int max_health;
@@ -61,8 +92,8 @@ struct Creature {
         int strength;
         string sprite;
 
-        Creature(string name, int health_base = 0, int defense = 10, int strength = 10, int energy = 4, string sprite = ENEMY_BOX_EMPTY)
-            : name{name}, 
+        Creature(string name, int health_base = 0, int defense = 10, int strength = 10, int energy = 4, string sprite = ENEMY_BOX_EMPTY) : 
+            name{name}, 
             max_health{health_base}, 
             curr_health{max_health}, 
             max_energy{energy}, 
@@ -128,19 +159,33 @@ struct Creature {
             curr_energy += value;
             curr_energy = max(0, min(curr_energy, max_energy));
         }
-
-        friend std::ostream& operator<<(std::ostream& outs, const Creature& creature);
     
 };
 
+// INCLUDED HERE TO AVOID CIRCULAR DEPENDENCIES
+// Move only needs to referance the base class of creature, so creature is defined before moves.
 #include "ft_moves.hpp"
-
-std::ostream& operator<<(std::ostream& outs, const Creature& creature) {
-    return outs << creature.name << ", " << creature.curr_health;
-}
 
 
 struct Player : Creature {
+    /*
+    The class for the player creature, this is a representation of the players character
+
+    Variables
+        int health, health value of the player
+        int defense, defense value of the player
+        int strength, strength value of the player
+        vector<unique_ptr<Move>> known_moves, a vector containing the moves that the player knows
+
+    Functions
+        Basic constructor
+        string list_moves(), returns a string of the moves the player knows, numbered
+        string list_moves_advanced(), returns a similar string to list_moves(), but with added stats of the moves
+        string target(int move_number), uses a move without targets, returns a string of what the move did
+        string target(Creature& victim, int move_number) uses a move with targets, returns a string of what the move did
+
+
+    */
     protected:
         static constexpr int health = 100;
         static constexpr int defense = 40;
@@ -149,6 +194,7 @@ struct Player : Creature {
         vector<unique_ptr<Move>> known_moves;
         Player(string name) : Creature{funkify(name), health, defense, strength}
         {
+            //MOVES KNOWN AT START
             known_moves.push_back(make_unique<JazzHands>());
             known_moves.push_back(make_unique<Macarena>());
             known_moves.push_back(make_unique<PumpUp>());
@@ -200,7 +246,19 @@ struct Player : Creature {
 
 
 struct Enemy : Creature {
+    /*
+    Base class for enemy creatures
+
+    Variables
+        vector<unique_ptr<Move>> known_moves, a vector containing the moves that the enemey knows
+
+    Functions
+        Basic constructor
+        string target(Creature& victim), chooses a random move that the enemy knows and uses, move is cast on victim if targeted
+
+    */
     protected:
+        //Constructor takes in an additional h_extra variable for the random extra health an enemy can have
         Enemy(string name, int h_base, int h_extra, int strength, int defense, string sprite) : 
             Creature{name, h_base + (rand() % h_extra), defense, strength, 4, sprite}
         {}
@@ -228,6 +286,10 @@ struct Enemy : Creature {
 
 
 struct GrooveGoblin : Enemy {
+    /*
+    The basic grunt enemy, with subpar stats and only some basic moves
+    Design to be easy, but still pose a small threat when in larger groups
+    */
     protected:
         static constexpr int health_base = 50;
         static constexpr int health_extra = 20;
@@ -238,17 +300,20 @@ struct GrooveGoblin : Enemy {
     public:
         GrooveGoblin() : Enemy{"Groove Goblin " + name_list[rand() % name_list.size()], health_base, health_extra, strength, defense, sprite}
         {
+            // Known moves at start
             known_moves.push_back(make_unique<JazzHands>());
             known_moves.push_back(make_unique<Macarena>());
         }
 };
 
+// The string of names, one is chosen at random on enemy creation.
 const vector<string> GrooveGoblin::name_list = {"Gary", "Guppy", "Grumpy", "Grechen", "Gumbi", "Giuseppe", "Gunther", "Gorganthal"};
+// The sprite for the enemy
 const string GrooveGoblin::sprite = GROOVE_GOBLIN_SPRITE;
 
 struct DiscoDevil : Enemy {
     protected:
-        static constexpr int health_base = 80;
+        static constexpr int health_base = 90;
         static constexpr int health_extra = 40;
         static constexpr int strength = 15;
         static constexpr int defense = 20;
@@ -257,6 +322,7 @@ struct DiscoDevil : Enemy {
     public:
         DiscoDevil() : Enemy{"Disco Devil " + name_list[rand() % name_list.size()], health_base, health_extra, strength, defense, sprite}
         {
+            // Known moves at start
             known_moves.push_back(make_unique<JazzHands>());
             known_moves.push_back(make_unique<Macarena>());
             known_moves.push_back(make_unique<PumpUp>());
@@ -264,7 +330,9 @@ struct DiscoDevil : Enemy {
         }
 };
 
+// The string of names, one is chosen at random on enemy creation.
 const vector<string> DiscoDevil::name_list = {"Dan", "Darmacklemoore", "Darnell", "Dizzy", "Daraxxus"};
+// The sprite for the enemy
 const string DiscoDevil::sprite = DISCO_DEVIL_SPRITE;
 
 #endif

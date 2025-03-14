@@ -4,7 +4,7 @@ FLAGS = -Wextra -Wall -std=c++20 -O3 -Wpedantic -Werror -Wfatal-errors
 TARGETS = FunkTactics.cpp
 OUTNAME = FunkTactics
 
-all:
+all :
 	$(CPP) -o $(OUTNAME) $(TARGETS) $(FLAGS) $(DEBUG)
 
 clean :
