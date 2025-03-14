@@ -337,10 +337,10 @@ const string DiscoDevil::sprite = DISCO_DEVIL_SPRITE;
 
 struct BustdownBomber : Enemy {
     protected:
-        static constexpr int health_base = 110;
-        static constexpr int health_extra = 60;
+        static constexpr int health_base = 100;
+        static constexpr int health_extra = 50;
         static constexpr int strength = 25;
-        static constexpr int defense = 30;
+        static constexpr int defense = 25;
         static const vector<string> name_list;
         static const string sprite;
     public:
