@@ -76,30 +76,48 @@ The next structure is Attack, its a child of Move and has basic stat variables a
 Below that you will find the structs for the moves themselves. Each move is either a child of Attack or Stat depending on what the move does, attacking moves can make use of the base trigger function from Attack for their trigger effect, Stat moves have no base trigger effect so they must have their own trigger function. Attack moves can also have their own trigger functions.
 
 
-- ft_fight.hpp
-
-- ft_drawer.hpp
-
-- ft_sprites.hpp
+- ft_fight.hpp\
+The fight file handles the fights themselves. It has one function called start_fight which starts a fight. It starts by creating 1 - 3 enemies (2/3 chance goblin, 1/3 chance devil). Then it creates the fight announcement message and starts the fight. The fight is a while loop that goes through the players turn, enemy turn, win/loss check and then loop, it utilizes the strings returned by moves to display the messages of what the moves did. It mostly calls other functions and then passes messages and creature data to the battle_state function (battle_state is from ft_drawer). It returns a bool when done, true for player win, false for player loss.
 
 
+- ft_drawer.hpp\
+The drawer file handles the ui drawing, the most important function is the battle_state function which draws out the battle ui based on the player, enemies, and message. It does this with the help of many functions.\
+sprite_combine takes two strings and combines each line together, it assumes equal line count and is most often used to glue two sprites together horizontally.\ 
+pad_space adds an amount of spaces to a line until the line reaches a given length.\
+pad_block calls pad_space on each line in the given string, it can also add a custom string to the front and back of each line. Useful to make sure that sprites are rectangular before calling sprite_combine.\
+wrap_string takes a string and wraps it so that it is at most a given width. It splits the string into lines based on spaces so that words are not cut in half.\
+count_lines counts how many lines there are in a string.\
+draw_hp_bar returns a string health bar for a given creature based on its current and max health, makes the bar a given length.
+draw_energy is very similar to draw_hp_bar but for the energy stat, only used for the player, but theoretically could be used on any creature.\
+draw_enemy_health uses draw_hp_bar to return a string of all health bars of enemies sprite combined togethr with fille spaces for alignment.\
+draw_enemy_names uses pad_space and sprite combine to create a line alligned with the health and sprites containing the names of enemies.\
+draw_enemy_sprites is very similar to draw_enemy_health and draw_enemy_names but returns a string with the sprites instead.\
+title_screen draws the title screen.\
+game_over draws the game over screen.\
+victory draws the victory screen.
 
-## Known Bugs
 
-ICELANDIC LETTERS, TWO ENTERS
+- ft_sprites.hpp\
+This file contains all the sprites used in the game.
 
 
 
-TODO: OTHER MOVES, ONGOING
+## Known Bugs and Notes
 
-TODO: ICELANDIC LETTES SCREW WITH UI
+### Notes
+System is used but ONLY TO CLEAR THE SCREEN. This is used for drawing functions, i am not aware of a better solution.\
+At the top of the ft_drawer.hpp file the clear command is defined according to the system. I am yet to test this on other systems, but it does work on my MAC, if this causes issues you can head to the top of the ft_drawer.hpp file and simplu define CLEAR_COMMAND as a string representation of the command used on your system to clear the terminal screen.
 
-TODO: SCALARS
+### Known Bugs
+There are a few bugs that i am aware of but they are really minor and i deemed them to be not worth the time to tackle.
+- Using Icelandic letters in the player name causes the UI to have a gap.
+- When a fight starts the player must press ENTER twice to continue.
 
-TODO: ON FIGHT ENTER, TWO ENTERS REQUIRED
+### Future Ideas
+If i ever continue this project here are some things i might include
 
-TODO: RANDOM UNIOFORM INT DISTRIBUTION
-
-TODO: NEFNA SYSTEM  CLEAR THING
-
-GOOD COMMIT VERSION: # 88112bc
+- More moves
+- More enemies
+- Scaling enemies
+- Boss encounters
+- Paths

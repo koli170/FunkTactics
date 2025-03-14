@@ -137,7 +137,7 @@ string draw_hp_bar(Creature& player, int bar_size){
 }
 
 string draw_energy(Creature& player){
-    // Draws an energt bar for a given creature, only used for player
+    // Draws an energy bar for a given creature, only used for player
     int squares_to_draw = player.get_energy();
     string top = "╔═══════╦═══════╦═══════╦═══════╗\n";
     string bot = "╚═══════╩═══════╩═══════╩═══════╝\n";
