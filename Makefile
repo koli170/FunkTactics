@@ -5,7 +5,7 @@ TARGETS = FunkTactics.cpp
 OUTNAME = FunkTactics
 
 all :
-	$(CPP) -o $(OUTNAME) $(TARGETS) $(FLAGS) $(DEBUG)
+	$(CPP) -o $(OUTNAME) $(TARGETS) $(FLAGS)
 
 clean :
 	-rm $(OUTNAME)
