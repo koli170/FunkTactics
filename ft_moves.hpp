@@ -247,7 +247,7 @@ struct PumpUp : Stat {
 
         string trigger(Creature& attacker){
             attacker.modify_energy(power-1);
-            return attacker.get_name() + " uses " + name + " and gains " + to_string(power + 1) + " energy!";
+            return attacker.get_name() + " uses " + name + " and gains " + to_string(power) + " energy!";
         }
 };
 
